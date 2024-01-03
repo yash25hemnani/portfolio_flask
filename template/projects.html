@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+            {% block body %}
+            <style type="text/css">
+                  .center {
+      text-align: center;
+    }
+            </style>
+            <!-- Projects Section-->
+            <section class="py-5">
+            <div class="row row-cols-1 row-cols-md-3 g-4 ">
+              {% if pro_count > 0 %}
+              {% for item in project %}
+              <div class="col">
+                <div class="card mx-4">
+                  {% set fname = '/assets/' + item.img %}
+                  <img src="{{ url_for('static', filename = fname ) }}">
+                  <div class="card-body">
+                    <h5 class="card-title">{{item.title}}</h5>
+                    <p class="card-text">{{item.description}}</p>
+                    <a href="{{item.link}}" target="_blank" class="btn btn-primary">Link</a>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+              {% else %}
+              <div class="text-center">
+              <h2>Nothing to Show Yet</h2>
+            </div>
+              {% endif %}              
+            </section>
+            <!-- Call to action section-->
+            <section class="py-5 bg-gradient-primary-to-secondary text-white">
+                <div class="container px-5 my-5">
+                    <div class="text-center">
+                        <h2 class="display-4 fw-bolder mb-4">Let's build something together</h2>
+                        <a class="btn btn-outline-light btn-lg px-5 py-3 fs-6 fw-bolder" href="/contact">Contact me</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+        {% endblock %}

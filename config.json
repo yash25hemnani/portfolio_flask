@@ -1,0 +1,13 @@
+{
+  "params":
+  {
+    "local_server": "True",
+    "local_uri": "mysql://root:@localhost/portfolio_new",
+    "prod_uri": "mysql://root:@localhost/portfolio_new",
+    "gmail-user": "yashhemnani8504@gmail.com",
+    "gmail-password": "zisf tfpw jidi lutl",
+    "admin_user": "Yash",
+    "admin_password": "Hemnani",
+    "upload_location": "C:\\Users\\Yash\\PycharmProjects\\Practice_Python\\Portfolio - YH\\static\\assets"
+  }
+}

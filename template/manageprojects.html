@@ -1,0 +1,226 @@
+{% extends "layout.html" %}
+            {% block body %}
+            <div class="container px-5 my-5">
+
+                <div class="text-center mb-5">
+                    <h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Manage Projects</span></h1>
+                </div>
+                
+
+
+                <style type="text/css">
+                table {
+                    border-collapse: collapse; /* Collapses the borders into a single line */
+                    width: 100%; /* Sets the table width to 100% of its container */
+                    margin: 0 auto;
+                  }
+                  
+                  /* CSS style for table cells */
+                  td, th {
+                    border: 2px solid #000; /* Sets a 2px solid
+                     black border */
+                    padding: 8px; /* Adds some padding around the content */
+                    text-align: center;
+                  }
+
+                  .button {
+                  border: none;
+                  color: white;
+                  padding: 15px 32px;
+                  text-align: center;
+                  text-decoration: none;
+                  display: inline-block;
+                  font-size: 16px;
+                  margin: 4px 2px;
+                  cursor: pointer;
+                }
+
+                .button1 {background-color: #0BDA51;} /* Green */
+                .button2 {background-color: #FF0000;} /* Red */
+                .button3 {background-color: #FFA500;} /* Yellow */
+                </style>
+
+                    <div class="modal fade" id="staticBackdropProject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Add Project</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                             <form id="expform" action = '/add_project'  method = 'post' novalidate  enctype="multipart/form-data">
+                              
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Image:</label>
+                                <input type="file" class="form-control" id="image" name = "image" >
+                              </div>
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Title:</label>
+                                <input type="text" class="form-control" id="title" name = "title" >
+                              </div>
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Description:</label>
+                                <input type="text" class="form-control" id="description" name = "description" >
+                              </div>
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Link:</label>
+                                <input type="text" class="form-control" id="link" name = "link" >
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-red" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" >Add</button>
+                          </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                <div class="text-center">
+                    <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="/dashboard">Dashboard Home</a>
+                    <br>
+                    <br>
+                    <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" data-bs-toggle="modal"  href="#staticBackdropProject">Add a Project</a>
+                    <br>
+                    <br>
+
+            <div class="text-center">
+            {% with messages = get_flashed_messages(with_categories = true)   %}  
+                {% if messages %}  
+                    {% for category, message in messages %}  
+<div class="alert alert-{{category}} alert-dismissible text-center" onclick="this.remove();">
+  <div class="row">
+    <div class="col-md-12">
+      <strong>{{message}}</strong> (Click to Dismiss!)
+    </div>
+  </div>
+</div>
+</div>
+                </div>
+                         <style type="text/css">
+        .alert-dismissible {
+    padding-right: 1rem;
+}</style>
+
+
+            <!-- Button container -->
+              <br>
+
+
+
+
+                     {% endfor %}  
+                {% endif %}  
+            {% endwith %} 
+                <hr>
+                <br>
+                <div>
+                <table>
+                  <tr>
+                    <th>S.No.</th>
+                    <th>Title</th>
+                    <th>Show</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                  </tr>
+                  {% if pro_count > 0 %}
+                  {% for item in project %}
+                  <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{item.title}}</td>
+                    <td><a class="button button3" data-bs-toggle="modal" href="#staticBackdropShow{{item.sno}}">Show</a></td>
+                    <td><a class="button button1" data-bs-toggle="modal" href = "#staticBackdropEdit{{item.sno}}">Edit</a></td>
+                    <td><a class="button button2" href="/del_pro/{{item.sno}}">Delete</a></td>
+                  </tr>
+
+                    <div class="modal fade" id="staticBackdropShow{{item.sno}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Add Project</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                             <form id="expform" action = '/add_project'  method = 'post' novalidate  enctype="multipart/form-data">
+                              
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Image:</label>
+                                {% set fname = '/assets/' + item.img %}
+                                <img src="{{ url_for('static', filename = fname ) }}" class="img-fluid" alt="Item Image">  
+                              </div>
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Title:</label>
+                                <input type="text" class="form-control" id="title" name = "title" value = "{{item.title}}">
+                              </div>
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Description:</label>
+                                <input type="text" class="form-control" id="description" name = "description" value = "{{item.description}}">
+                              </div>
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Link:</label>
+                                <input type="text" class="form-control" id="link" name = "link" value = "{{item.link}}">
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-red" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal" href = "#staticBackdropEdit{{item.sno}}">Edit</button>
+                          </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
+                      <div class="modal fade" id="staticBackdropEdit{{item.sno}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Editing Project ID: {{item.sno}}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+
+                          <div class="modal-body">
+                             <form id="expform" action = '/edit_project/{{item.sno}}'  method = 'post' novalidate  enctype="multipart/form-data">
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Current Image:</label>
+                                {% set fname = '/assets/' + item.img %}
+                                <img src="{{ url_for('static', filename = fname ) }}" class="img-fluid" alt="Item Image">  
+                              </div>
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">New Image:</label>
+                                <input type="file" class="form-control" id="image" name = "image">
+                              </div>
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Title:</label>
+                                <input type="text" class="form-control" id="title" name = "title" value = "{{item.title}}">
+                              </div>
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Description:</label>
+                                <input type="text" class="form-control" id="description" name = "description" value = "{{item.description}}">
+                              </div>
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Link:</label>
+                                <input type="text" class="form-control" id="link" name = "link" value = "{{item.link}}">
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-red" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" >Save</button>
+                          </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  {% endfor %}
+                    {% else %}
+                    <tr> 
+                        <td colspan="5">Nothing to Show</td> 
+                    </tr>
+                {% endif %}
+                </table>
+            </div>
+
+            {% endblock %}
